@@ -84,10 +84,10 @@ class GithubTable extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            attr_columns: this.props.attr_columns,
-            metric_columns: this.props.metric_columns,
-            attr_values: this.props.attr_values,
-            metric_values: this.props.metric_values,
+            attr_columns: [],
+            attr_values: [],
+            metric_columns: [],
+            metric_values: [],
         }
         this.filterByName = this.filterByName.bind(this);
  
@@ -97,32 +97,50 @@ class GithubTable extends React.Component{
         this.setState({value: event.target.value});
     }
     
+    componentDidMount(){
+        fetch("http://localhost:8080/github/repos")
+            .then(response => response.json())
+            .then(data => this.setState({...data}));
+    }
 
     filterByName(event){
         let name = event.target.value;  // 只能取一次
-        this.setState(function(preState){ 
-            let new_attrs = [];
-            let new_metrics = [];
-            if(! name){
-                return {
-                    attr_columns: this.props.attr_columns,
-                    metric_columns: this.props.metric_columns,
-                    attr_values: this.props.attr_values,
-                    metric_values: this.props.metric_values,
-                };
-            }
-            // 要和 this.props.attr_values比较, 因为state中的attr_values会变化
-            for (let i=0; i<this.props.attr_values.length; i++){
-                if (name && this.props.attr_values[i][1] === name){
-                    new_attrs.push(this.props.attr_values[i]);
-                    new_metrics.push(this.props.metric_values[i]);
-                }
-            }
-            return {
-                attr_columns: preState.attr_columns, metric_columns: preState.metric_columns,
-                attr_values: new_attrs, metric_values: new_metrics
-            }
-        });
+        let url = "http://localhost:8080/github/repos"
+        if(name){
+            url += "?name=" + name;
+        }
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => this.setState({
+                attr_columns: this.state.attr_columns,
+                metric_columns: this.state.metric_columns,
+                attr_values: data.attr_values,
+                metric_values: data.metric_values
+            }));
+        // this.setState(function(preState){ 
+        //     let new_attrs = [];
+        //     let new_metrics = [];
+        //     if(! name){
+        //         return {
+        //             attr_columns: this.props.attr_columns,
+        //             metric_columns: this.props.metric_columns,
+        //             attr_values: this.props.attr_values,
+        //             metric_values: this.props.metric_values,
+        //         };
+        //     }
+        //     // 要和 this.props.attr_values比较, 因为state中的attr_values会变化
+        //     for (let i=0; i<this.props.attr_values.length; i++){
+        //         if (name && this.props.attr_values[i][1] === name){
+        //             new_attrs.push(this.props.attr_values[i]);
+        //             new_metrics.push(this.props.metric_values[i]);
+        //         }
+        //     }
+        //     return {
+        //         attr_columns: preState.attr_columns, metric_columns: preState.metric_columns,
+        //         attr_values: new_attrs, metric_values: new_metrics
+        //     }
+        // });
     }
 
     render(){
