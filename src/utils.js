@@ -10,7 +10,7 @@ function get(url, params, callback){
 
 
 function convertDatetime(iso_time){
-    return iso_time.split(" ")[0];
+    return iso_time ? iso_time.split(" ")[0] : '';
 }
 
 
