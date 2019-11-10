@@ -1,5 +1,6 @@
 import React from 'react';
 import Styles from './styles';
+import Config from './config';
 
 class AttributeHeader extends React.Component{
     constructor(props){
@@ -98,19 +99,20 @@ class GithubTable extends React.Component{
     }
     
     componentDidMount(){
-        fetch("http://localhost:8080/github/repos")
+        const api = Config.host + Config.RepoListFetchAPI;
+        fetch(api)
             .then(response => response.json())
             .then(data => this.setState({...data}));
     }
 
     filterByName(event){
         let name = event.target.value;  // 只能取一次
-        let url = "http://localhost:8080/github/repos"
+        let api = Config.host + Config.RepoListFetchAPI;
         if(name){
-            url += "?name=" + name;
+            api += "?name=" + name;
         }
 
-        fetch(url)
+        fetch(api)
             .then(response => response.json())
             .then(data => this.setState({
                 attr_columns: this.state.attr_columns,
