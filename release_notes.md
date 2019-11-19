@@ -1,15 +1,20 @@
-### V1.0 2019-10-29
+### v1.0 2019-10-29
 - Basic Layout: filter and table
 
-### V1.1 2019-11-09
+### v1.1 2019-11-09
 - fetch data
 
-### V1.2 2019-11-10
+### v1.2 2019-11-10
 - learn css, make the page good-looking
 - use ant design
 - search bar add icon
 - 部署到华为云
 
-### 
-
-- sort by column
+### v1.3 todo
+- 导出报表
+- 筛选主题和编程语言
+- 按照列排序
+- 使用celery异步更新
+- 接口翻页
+- 使用Nginx管理React静态资源
+-
